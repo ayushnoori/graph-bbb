@@ -7,7 +7,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)
 
 <!-- badges: end -->
 
-Here, I use [Graphormer](https://www.microsoft.com/en-us/research/project/graphormer/), first published at [NeurIPS 2021](https://openreview.net/forum?id=OeWooOxFwDa), to predict whether molecules from the [Therapeutics Data Commons](https://tdcommons.ai) [Blood-Brain Barrier Dataset](https://tdcommons.ai/single_pred_tasks/adme/#bbb-blood-brain-barrier-martins-et-al) (derived from [Martins et al., 2012](https://doi.org/10.1021/ci300124c)) can penetrate the blood-brain barrier.
+The strict selectivity of the blood-brain barrier (BBB) represents one of the most formidable challenge to successful central nervous system (CNS) drug delivery in disease. Computational approaches to predict BBB penetration capacity *in silico* may be valuable tools in the CNS drug design pipeline. Here, I use [Graphormer](https://www.microsoft.com/en-us/research/project/graphormer/), first published at [NeurIPS 2021](https://openreview.net/forum?id=OeWooOxFwDa), to predict whether molecules from the [Therapeutics Data Commons](https://tdcommons.ai) [Blood-Brain Barrier Dataset](https://tdcommons.ai/single_pred_tasks/adme/#bbb-blood-brain-barrier-martins-et-al) (derived from [Martins et al., 2012](https://doi.org/10.1021/ci300124c)) can penetrate the BBB.
 
 
 ## Setup
@@ -45,17 +45,17 @@ bash zinc.sh
 ```
 The absence of `setuptools` may produce a `ModuleNotFoundError` (i.e., `No module named '_distutils_hack'`); however, training should still proceed. Other packages may be needed. Remember, however, to uninstall `setuptools` again should it be re-installed in the installation process for other packages.
 
-First, we must install the [Therapeutics Data Commons](https://tdcommons.ai/start/) package.
+First, we  install the [Therapeutics Data Commons](https://tdcommons.ai/start/) package.
 ```
 pip install PyTDC
 ```
-For interactive Jupyter notebooks:
+To allow interactive [Jupyter](https://jupyter.org/) notebooks and [`matplotlib`](https://matplotlib.org/) visualization, install the following packages.
 ```
 pip install jupyterlab
 pip install notebook
 pip install matplotlib
 ```
-TensorBoard is a visualization toolkit for ML training. TensorBoard logging can be enabled by adding the following flag to the training `.sh` script: `--tensorboard-logdir ./runs \`. To install [TensorBoard](https://pytorch.org/tutorials/recipes/recipes/tensorboard_with_pytorch.html):
+[TensorBoard](https://pytorch.org/tutorials/recipes/recipes/tensorboard_with_pytorch.html) is a visualization toolkit for ML training. TensorBoard logging can be enabled by adding the following flag to the training `.sh` script: `--tensorboard-logdir ./runs \`. To install TensorBoard:
 ```
 pip install tensorboard
 ```
