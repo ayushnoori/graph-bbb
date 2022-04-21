@@ -19,7 +19,7 @@ College](https://gened1125.github.io/spring2022/).
 
 ## Selected References
 
-1. Ying, C. et al. Do Transformers Really Perform Badly for Graph Representation? in (2021).
+1. 1.Ying, C. et al. Do Transformers Really Perform Badly for Graph Representation? in Advances in Neural Information Processing Systems vol. 34 28877–28888 (Curran Associates, Inc., 2021).
 
 2. Huang, K. et al. Therapeutics Data Commons: Machine Learning Datasets and Tasks for Drug Discovery and Development. arXiv:2102.09548 [cs, q-bio] (2021).
 
