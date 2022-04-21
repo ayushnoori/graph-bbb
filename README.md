@@ -7,7 +7,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)
 
 <!-- badges: end -->
 
-The strict selectivity of the blood-brain barrier (BBB) represents one of the most formidable challenge to successful central nervous system (CNS) drug delivery in disease. Computational approaches to predict BBB penetration capacity *in silico* may be valuable tools in the CNS drug design pipeline. Here, I use [Graphormer](https://www.microsoft.com/en-us/research/project/graphormer/), first published at [NeurIPS 2021](https://openreview.net/forum?id=OeWooOxFwDa), to predict whether molecules from the [Therapeutics Data Commons](https://tdcommons.ai) [Blood-Brain Barrier Dataset](https://tdcommons.ai/single_pred_tasks/adme/#bbb-blood-brain-barrier-martins-et-al) (derived from [Martins et al., 2012](https://doi.org/10.1021/ci300124c)) can penetrate the BBB.
+The strict selectivity of the blood-brain barrier (BBB) represents one of the most formidable challenge to successful central nervous system (CNS) drug delivery. Computational approaches to predict BBB penetration capacity *in silico* may be valuable tools in the CNS drug design pipeline. Here, I use [Graphormer](https://www.microsoft.com/en-us/research/project/graphormer/), first published at [NeurIPS 2021](https://openreview.net/forum?id=OeWooOxFwDa), to predict whether molecules from the [Therapeutics Data Commons](https://tdcommons.ai) [Blood-Brain Barrier Dataset](https://tdcommons.ai/single_pred_tasks/adme/#bbb-blood-brain-barrier-martins-et-al) (derived from [Martins et al., 2012](https://doi.org/10.1021/ci300124c)) can penetrate the BBB.
 
 
 ## Setup
