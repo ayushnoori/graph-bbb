@@ -1,4 +1,4 @@
-# Graph Transformers to Predict Blood-Brain-Barrier Penetration 
+# Molecular Learning with Graph Transformers to Predict Blood-Brain-Barrier Penetration 
 
 <!-- badges: start -->
 
