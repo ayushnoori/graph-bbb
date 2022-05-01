@@ -11,7 +11,7 @@ CUDA_VISIBLE_DEVICES=0 fairseq-train \
 --user-dir ../../graphormer \
 --num-workers 16 \
 --ddp-backend=legacy_ddp \
---dataset-name BBB_Martins \
+--dataset-name BBB_Martins_Random \
 --user-data-dir ../customized_dataset \
 --task graph_prediction_with_flag \
 --criterion binary_logloss_with_flag \
@@ -22,15 +22,15 @@ CUDA_VISIBLE_DEVICES=0 fairseq-train \
 --lr-scheduler polynomial_decay --power 1 --warmup-updates $warmup_updates --total-num-update $tot_updates \
 --lr 2e-4 --end-learning-rate 1e-9 \
 --batch-size $batch_size \
---fp16 \
+--fp32 \
 --data-buffer-size 20 \
 --encoder-layers 12 \
 --encoder-embed-dim 768 \
 --encoder-ffn-embed-dim 768 \
 --encoder-attention-heads 32 \
 --max-epoch $max_epoch \
---save-dir /n/data1/hms/dbmi/zitnik/lab/users/an252/BBB/ckpts/2022.04.25 \
---tensorboard-logdir /n/data1/hms/dbmi/zitnik/lab/users/an252/BBB/runs/2022.04.25 \
+--save-dir /n/data1/hms/dbmi/zitnik/lab/users/an252/BBB/ckpts/2022.04.25_2 \
+--tensorboard-logdir /n/data1/hms/dbmi/zitnik/lab/users/an252/BBB/runs/2022.04.25_2 \
 --pretrained-model-name pcqm4mv1_graphormer_base_for_molhiv \
 --seed 1 \
 --flag-m 3 \
