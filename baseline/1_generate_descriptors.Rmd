@@ -1,0 +1,148 @@
+---
+title: Generate Molecular Descriptors
+subtitle: Ayush Noori
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+    toc: yes
+editor_options:
+  chunk_output_type: inline
+---
+
+```{r setup, include = FALSE}
+# knitr::opts_chunk$set(message=FALSE, warning=FALSE)
+```
+
+# Dependencies
+
+Load requisite packages and define directories.
+
+```{r load-packages, message=FALSE, warning=FALSE}
+
+# data manipulation
+library(data.table)
+library(purrr)
+library(magrittr)
+library(stringi)
+
+# R interface to Java CDK chemoinformatics framework
+library(rcdk)
+
+# molecular fingerprints
+library(fingerprint)
+
+# ML libraries
+library(caret)
+
+# data visualization
+library(ggplot2)
+
+# source utilities package
+library(brainstorm)
+
+```
+
+Note that directories are relative to the R project path.
+
+```{r define-directores}
+
+# set directories
+ddir = file.path("data")
+rdir = file.path("baseline", "results")
+
+# set seed
+set.seed(42)
+
+```
+
+# Read Data
+
+Read data downloaded from separate Python script.
+
+```{r read-data}
+
+dat = fread(file.path(ddir, "bbb_martins.tab")) %>%
+  .[, ID := stri_rand_strings(nrow(.), 6, pattern = "[A-Za-z]")] %>%
+  setcolorder("ID") %>%
+  .[, Y := factor(Y, levels = 0:1, labels = c("N", "Y"))]
+
+```
+
+# Generate Descriptors
+
+Generate molecular descriptors.
+
+```{r generate-descriptors}
+
+# convert molecule to molecular formula
+sp = get.smiles.parser()
+mols = parse.smiles(dat$Drug)
+
+# generate MACCS fingnerprints for all the molecules
+fps = map(mols, ~get.fingerprint(.x, type = "maccs"))
+
+# convert fingerprints to matrix
+fp_mtx = fp.to.matrix(fps)
+rownames(fp_mtx) = dat$ID
+colnames(fp_mtx) = seq(1:ncol(fp_mtx))
+
+```
+
+# Train Model
+
+Partition data.
+
+```{r partition-data}
+
+# partition data
+train_lab = dat[createDataPartition(Y, p = 0.7, list = FALSE), ID]
+test_lab = dat[!ID %in% train_lab] %>%
+    .[createDataPartition(Y, p = 0.66, list = FALSE), ID]
+
+# create partition variable
+dat %>%
+  .[, Partition := "Validation"] %>%
+  .[ID %in% train_lab, Partition := "Train"] %>%
+  .[ID %in% test_lab, Partition := "Test"]
+
+# split datasets
+train_dat = fp_mtx[dat$Partition %in% c("Train", "Validation"), ]
+test_dat = fp_mtx[dat$Partition == "Test", ]
+
+```
+
+Estimate the pre-processing transformation (remove zero variance) from the training data, then apply to all data. Add `"center", "scale"` to the `method` argument of `preProcess()` to center and scale the data.
+
+```{r pre-process}
+
+# normalize data
+vars = colnames(train_dat)
+normalize = preProcess(train_dat, method = c("zv"), verbose = TRUE)
+
+# apply transformation
+train_dat = predict(normalize, train_dat)
+test_dat = predict(normalize, test_dat)
+
+```
+Train model on training set.
+
+```{r train-model}
+
+# establish 10-fold cross validation to determine the out-of-sample error
+tC = trainControl(method = "cv", number = 10, savePredictions = TRUE, classProbs = TRUE, verboseIter = TRUE)
+
+# train GBM model on training set
+gbm_model = train(x = train_dat, y = dat[Partition %in% c("Train", "Validation"), Y], method = "gbm", trControl = tC)
+
+```
+
+Evaluate model on test set.
+
+```{r evaluate-model}
+
+# evaluate GBM model on test set
+gbm_pred = predict(gbm_model, test_dat)
+gbm_cm = confusionMatrix(gbm_pred, dat[Partition == "Test", Y])
+
+```
