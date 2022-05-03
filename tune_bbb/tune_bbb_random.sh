@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 n_gpu=1
-epoch=300
+epoch=9
 max_epoch=$((epoch + 1))
-batch_size=128
+batch_size=32
 tot_updates=$((33000*epoch/batch_size/n_gpu))
 warmup_updates=$((tot_updates*16/100))
 
@@ -13,8 +13,8 @@ CUDA_VISIBLE_DEVICES=0 fairseq-train \
 --ddp-backend=legacy_ddp \
 --dataset-name BBB_Martins_Random \
 --user-data-dir ../customized_dataset \
---task graph_prediction_with_flag \
---criterion binary_logloss_with_flag \
+--task graph_prediction \
+--criterion binary_logloss \
 --arch graphormer_base \
 --num-classes 1 \
 --attention-dropout 0.1 --act-dropout 0.1 --dropout 0.0 \
@@ -22,18 +22,15 @@ CUDA_VISIBLE_DEVICES=0 fairseq-train \
 --lr-scheduler polynomial_decay --power 1 --warmup-updates $warmup_updates --total-num-update $tot_updates \
 --lr 2e-4 --end-learning-rate 1e-9 \
 --batch-size $batch_size \
---fp32 \
+--fp16 \
 --data-buffer-size 20 \
 --encoder-layers 12 \
 --encoder-embed-dim 768 \
 --encoder-ffn-embed-dim 768 \
 --encoder-attention-heads 32 \
 --max-epoch $max_epoch \
---save-dir /n/data1/hms/dbmi/zitnik/lab/users/an252/BBB/ckpts/2022.04.25_2 \
---tensorboard-logdir /n/data1/hms/dbmi/zitnik/lab/users/an252/BBB/runs/2022.04.25_2 \
+--save-dir /n/data1/hms/dbmi/zitnik/lab/users/an252/BBB/ckpts/2022.05.01_2 \
+--tensorboard-logdir /n/data1/hms/dbmi/zitnik/lab/users/an252/BBB/runs/2022.05.01_2 \
 --pretrained-model-name pcqm4mv1_graphormer_base_for_molhiv \
 --seed 1 \
---flag-m 3 \
---flag-step-size 0.01 \
---flag-mag 0 \
 --pre-layernorm
