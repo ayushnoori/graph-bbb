@@ -10,6 +10,19 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)
 The strict selectivity of the blood-brain barrier (BBB) represents one of the most formidable challenge to successful central nervous system (CNS) drug delivery. Computational approaches to predict BBB penetration capacity *in silico* may be valuable tools in the CNS drug design pipeline. Here, I use [Graphormer](https://www.microsoft.com/en-us/research/project/graphormer/), first published at [NeurIPS 2021](https://openreview.net/forum?id=OeWooOxFwDa), to predict whether molecules from the [Therapeutics Data Commons](https://tdcommons.ai) [Blood-Brain Barrier Dataset](https://tdcommons.ai/single_pred_tasks/adme/#bbb-blood-brain-barrier-martins-et-al) (derived from [Martins et al., 2012](https://doi.org/10.1021/ci300124c)) can penetrate the BBB.
 
 
+## Overview
+
+* `/data` contains the Martins et al. BBB dataset.
+
+* `/src` contains the code for the TDC leaderboard submission.
+
+* `/customized_dataset` contains the `.py` data loaders which define the custom Martins et al. dataset for Graphormer.
+
+* `/tune_bbb` contains command line `.sh` scripts to train the Graphormer model.
+
+* `/baseline` contains R code to train and test a baseline model inspired by Martins et al.
+
+
 ## Setup
 
 Based on the [Graphormer Installation Guide](https://graphormer.readthedocs.io/en/latest/Installation-Guide.html), follow the steps below to successfully install and run Graphormer on [O2](https://harvardmed.atlassian.net/wiki/spaces/O2/overview). First, [submit a GPU job on O2](https://harvardmed.atlassian.net/wiki/spaces/O2/pages/1629290761/Using+O2+GPU+resources). For example:

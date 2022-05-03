@@ -34,6 +34,7 @@ library(fingerprint)
 
 # ML libraries
 library(caret)
+library(xgboost)
 
 # data visualization
 library(ggplot2)
@@ -48,7 +49,7 @@ Note that directories are relative to the R project path.
 ```{r define-directores}
 
 # set directories
-ddir = file.path("data")
+ddir = file.path("scripts", "data")
 rdir = file.path("baseline", "results")
 
 # set seed
@@ -96,19 +97,20 @@ Partition data.
 ```{r partition-data}
 
 # partition data
-train_lab = dat[createDataPartition(Y, p = 0.7, list = FALSE), ID]
-test_lab = dat[!ID %in% train_lab] %>%
-    .[createDataPartition(Y, p = 0.66, list = FALSE), ID]
+train_vals = dat[createDataPartition(Y, p = 0.8, list = FALSE), ID]
 
 # create partition variable
 dat %>%
-  .[, Partition := "Validation"] %>%
-  .[ID %in% train_lab, Partition := "Train"] %>%
-  .[ID %in% test_lab, Partition := "Test"]
+  .[, Partition := "Test"] %>%
+  .[ID %in% train_vals, Partition := "Train"]
 
 # split datasets
-train_dat = fp_mtx[dat$Partition %in% c("Train", "Validation"), ]
+train_dat = fp_mtx[dat$Partition == "Train", ]
 test_dat = fp_mtx[dat$Partition == "Test", ]
+
+# get labels
+train_lab = as.numeric(dat[Partition == "Train", Y]) - 1
+test_lab = as.numeric(dat[Partition == "Test", Y]) - 1
 
 ```
 
@@ -125,6 +127,30 @@ train_dat = predict(normalize, train_dat)
 test_dat = predict(normalize, test_dat)
 
 ```
+
+Train `xgboost` GBM model.
+
+``` {r xgboost}
+
+# construct xgb.DMatirx object
+xgb_train = xgb.DMatrix(data = train_dat, label = train_lab)
+xgb_test = xgb.DMatrix(data = test_dat, label = test_lab)
+
+# define watch list
+# watchlist = list(train = xgb_train, test = xgb_test)
+
+# fit XGBoost model, could use watchlist = watchlist for validation
+xgb_model = xgb.train(data = xgb_train, max.depth = 3, nrounds = 70)
+
+# compute predictions
+xgb_pred = predict(xgb_model, xgb_test)
+
+# get confusion matrix
+xgb_cm = confusionMatrix(as.factor(round(xgb_pred)), as.factor(test_lab))
+print(xgb_cm)
+
+```
+
 Train model on training set.
 
 ```{r train-model}
