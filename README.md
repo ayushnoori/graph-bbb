@@ -11,15 +11,15 @@ The strict selectivity of the blood-brain barrier (BBB) represents one of the mo
 
 ## Overview
 
-* `/data` contains the Martins et al. BBB dataset.
+* `/scripts` contains all scripts, including Graphormer dataset pre-processing, XGBoost training scripts, and the code for the TDC leaderboard submission.
 
-* `/src` contains the code for the TDC leaderboard submission.
+    * `/scripts/data` contains the Martins et al. BBB dataset (i.e., `bbb_martins.tab`) and other datasets in the ADMET TDC group.
 
 * `/customized_dataset` contains the `.py` data loaders which define the custom Martins et al. dataset for Graphormer.
 
 * `/tune_bbb` contains command line `.sh` scripts to train the Graphormer model.
 
-* `/baseline` contains R code to train and test a baseline model inspired by Martins et al.
+* `/baseline` contains R code to train and test a baseline model.
 
 
 ## Setup
