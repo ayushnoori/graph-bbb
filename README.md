@@ -15,6 +15,14 @@ The strict selectivity of the blood-brain barrier (BBB) represents one of the mo
 
     * `/scripts/data` contains the Martins et al. BBB dataset (i.e., `bbb_martins.tab`) and other datasets in the ADMET TDC group.
 
+    * `/scripts/optuna` contains the results of Optuna Bayesian hyperparameter optimization.
+
+        * `/scripts/optuna/database` contains the study database.
+
+        * `/scripts/optuna/models` contains the final models from each Optuna trial.
+
+        * `/scripts/optuna/output` contains the diagnostic figures after hyperparameter optimization.
+
 * `/customized_dataset` contains the `.py` data loaders which define the custom Martins et al. dataset for Graphormer.
 
 * `/tune_bbb` contains command line `.sh` scripts to train the Graphormer model.
